@@ -1,5 +1,5 @@
 from selenium import webdriver
-from functions import login, logout, close_notifications, get_posts_links, get_post_info
+from functions import login, logout, close_notifications, get_posts_links, get_post_info, get_all_midia
 from datetime import datetime
 from user_info import USERNAME
 
@@ -20,15 +20,17 @@ with webdriver.Chrome() as driver:
             collected += 1
             driver.get(link)
             driver.implicitly_wait(1)
-            views, likes, type_media, date = get_post_info(driver)
-            posts_info.write(f'link: {link}\n')
-            posts_info.write(f'type: {type_media}\n')
+            views, likes, date = get_post_info(driver)
+            all_midia = get_all_midia(driver)
+            posts_info.write(f'link: {link}\n\n')
+            for number, midia in enumerate(all_midia):
+                posts_info.write(f'content{number+1}: {midia}\n')
             posts_info.write(f'date: {date}\n')
             if likes != None:
                 posts_info.write(f'likes: {likes}\n')
             if views != None:
                 posts_info.write(f'views: {views}\n')
-            posts_info.write('\n')
+            posts_info.write('\n--//--\n')
             percentage = int(100*collected / len(post_links))
             if percentage % 5 == 0 and percentage not in displayed:
                 print(f'collected {percentage}%')

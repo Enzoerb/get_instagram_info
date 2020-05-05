@@ -98,21 +98,55 @@ def get_post_date(driver):
 def get_post_views(driver):
     views = None
     video_divs = driver.find_elements_by_xpath('//div[@class="kPFhm B1JlO OAXCp "]')
+    video_divs += driver.find_elements_by_xpath('//div[@class="RzuR0 B1JlO OAXCp "]')
     if len(video_divs) == 1:
-        type_media = 'video'
         try:
             views_element = driver.find_element_by_xpath('//span[@class="vcOH2"]')
             views_span = views_element.find_element_by_css_selector('span')
             views = views_span.get_attribute("innerHTML")
         except NoSuchElementException:
             pass
-    else:
-        type_media = 'photo'
-    return views, type_media
+    return views
 
 
 def get_post_info(driver):
     date = get_post_date(driver)
     likes = get_post_likes(driver)
-    views, type_media = get_post_views(driver)
-    return views, likes, type_media, date
+    views = get_post_views(driver)
+    return views, likes, date
+
+
+def get_midia(driver, scope):
+    try:
+        element = scope.find_element_by_css_selector('video')
+        link = element.get_attribute('src')
+    except NoSuchElementException:
+        element = scope.find_element_by_css_selector('img')
+        link = element.get_attribute('src')
+    return link
+
+
+def get_midia_from_list(driver):
+    ul = driver.find_element_by_css_selector('ul')
+    li = ul.find_elements_by_css_selector('li')[-2]
+    link = get_midia(driver, li)
+    return link
+
+
+def get_all_midia(driver):
+    num_pages = len(driver.find_elements_by_xpath('//div[@class="Yi5aA "]'))
+    all_links = list()
+    if num_pages > 0:
+        link = get_midia_from_list(driver)
+        all_links.append(link)
+    else:
+        link = get_midia(driver, driver)
+        all_links.append(link)
+    for _ in range(num_pages):
+        button = driver.find_element_by_xpath('//button[@class="  _6CZji "]')
+        button.click()
+        link = get_midia_from_list(driver)
+        all_links.append(link)
+    print(all_links)
+    print(len(all_links), num_pages)
+    return all_links
