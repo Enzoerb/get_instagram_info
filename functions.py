@@ -121,7 +121,7 @@ def get_midia(driver, scope):
         element = scope.find_element_by_css_selector('video')
         link = element.get_attribute('src')
     except NoSuchElementException:
-        element = scope.find_element_by_css_selector('img')
+        element = scope.find_element_by_xpath('//img[@class="FFVAD"]')
         link = element.get_attribute('src')
     return link
 
