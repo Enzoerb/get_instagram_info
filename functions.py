@@ -90,8 +90,11 @@ def get_post_likes(driver):
 
 
 def get_post_date(driver):
-    time_element = driver.find_element_by_xpath('//time[@class="_1o9PC Nzb55"]')
-    date = time_element.get_attribute('title')
+    try:
+        time_element = driver.find_element_by_xpath('//time[@class="_1o9PC Nzb55"]')
+        date = time_element.get_attribute('title')
+    except NoSuchElementException:
+        date = "None"
     return date
 
 
@@ -143,10 +146,11 @@ def get_all_midia(driver):
         link = get_midia(driver, driver)
         all_links.append(link)
     for _ in range(num_pages):
-        button = driver.find_element_by_xpath('//button[@class="  _6CZji "]')
-        button.click()
-        link = get_midia_from_list(driver)
-        all_links.append(link)
-    print(all_links)
-    print(len(all_links), num_pages)
+        try:
+            button = driver.find_element_by_xpath('//button[@class="  _6CZji "]')
+            button.click()
+            link = get_midia_from_list(driver)
+            all_links.append(link)
+        except NoSuchElementException:
+            print(f'midia: {_}\nlink: {driver.current_url}')
     return all_links
