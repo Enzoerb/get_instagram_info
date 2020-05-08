@@ -24,17 +24,6 @@ def close_notifications(driver):
         pass
 
 
-def logout(driver):
-    user_page = driver.find_element_by_xpath('//a[@class="_2dbep qNELH kIKUG"]')
-    user_page_link = user_page.get_attribute("href")
-    driver.get(user_page_link)
-    engine = driver.find_element_by_xpath('//button[@class="wpO6b "]')
-    engine.click()
-    buttons = driver.find_elements_by_xpath('//button[@class="aOOlW   HoLwm "]')
-    logout_button = buttons[-2]
-    logout_button.click()
-
-
 def get_visible_post_links(driver):
     links = set()
     img_div = driver.find_elements_by_xpath('//div[@class="v1Nh3 kIKUG  _bz0w"]')

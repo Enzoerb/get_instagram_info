@@ -1,5 +1,5 @@
 from selenium import webdriver
-from functions import login, logout, close_notifications, get_posts_links, get_post_info, get_all_midia
+from functions import login, close_notifications, get_posts_links, get_post_info, get_all_midia
 from datetime import datetime
 from user_info import USERNAME
 
