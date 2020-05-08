@@ -134,12 +134,12 @@ def get_all_midia(driver):
     else:
         link = get_midia(driver, driver)
         all_links.append(link)
-    for _ in range(num_pages):
+    for page in range(num_pages):
         try:
             button = driver.find_element_by_xpath('//button[@class="  _6CZji "]')
             button.click()
             link = get_midia_from_list(driver)
             all_links.append(link)
         except NoSuchElementException:
-            print(f'midia: {_}\nlink: {driver.current_url}')
+            print(f'midia: {page}\nlink: {driver.current_url}')
     return all_links
